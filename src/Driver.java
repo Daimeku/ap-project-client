@@ -1,3 +1,5 @@
+import javax.swing.UIManager;
+
 import view.LoginView;
 import model.Drink;
 import model.Manager;
@@ -7,7 +9,11 @@ import network.Client;
 public class Driver {
 
 	public static void main(String[] args) throws Exception {
-        // TODO code application logic here
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		
         Client cl = new Client();
         
@@ -15,11 +21,8 @@ public class Driver {
         /*
         Drink d = new Drink();
         d.setName("thisdrink");
-<<<<<<< HEAD
-       // System.out.println("Sending choice");\\
-=======
        // System.out.println("Sending choice");
->>>>>>> 93a707fe61ad9522358182ef9004959a01c526d2
+       // System.out.println("Sending choice");
         String c = "add drink";
         cl.sendChoice(c);
         System.out.println("response: "+cl.recieveResponse());
