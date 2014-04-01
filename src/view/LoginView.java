@@ -237,6 +237,7 @@ public class LoginView extends JFrame {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 460, 560);
+		getRootPane().setDefaultButton(btnLogin);
 	}
 
 	/*@Override
