@@ -21,8 +21,11 @@ import javax.swing.JComboBox;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.DefaultComboBoxModel;
 
+<<<<<<< HEAD
 import network.Client;
 
+=======
+>>>>>>> 93a707fe61ad9522358182ef9004959a01c526d2
 import model.Drink;
 
 import java.awt.event.ActionListener;
@@ -39,7 +42,10 @@ public class AddDrinkView extends JDialog {
 	private JTextField tfName;
 	private JComboBox<String> comboBoxType;
 	private JSpinner spinnerPrice;
+<<<<<<< HEAD
 	private Client client;
+=======
+>>>>>>> 93a707fe61ad9522358182ef9004959a01c526d2
 
 	/**
 	 * Create the dialog.
@@ -52,7 +58,10 @@ public class AddDrinkView extends JDialog {
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		
+<<<<<<< HEAD
 		this.client = client;
+=======
+>>>>>>> 93a707fe61ad9522358182ef9004959a01c526d2
 		lblName = new JLabel("Name:");
 		
 		tfName = new JTextField();
@@ -130,8 +139,12 @@ public class AddDrinkView extends JDialog {
 							Drink aDrink = new Drink(drinkName, drinkType, drinkPrice);
 							
 							try {
+<<<<<<< HEAD
 									
 									
+=======
+								
+>>>>>>> 93a707fe61ad9522358182ef9004959a01c526d2
 								if(aDrink.save()){
 									JOptionPane.showMessageDialog(null, drinkName+" drink added!", "Drink Added",
 										    JOptionPane.INFORMATION_MESSAGE);

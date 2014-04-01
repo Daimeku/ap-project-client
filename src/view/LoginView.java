@@ -187,7 +187,11 @@ public class LoginView extends JFrame implements ActionListener {
 						
 						if(client.recieveResponse()){
 							ManagerView manager = new ManagerView(client);
+<<<<<<< HEAD
 							manager.setVisible(true);
+=======
+							manager.setVisible(true);;
+>>>>>>> 93a707fe61ad9522358182ef9004959a01c526d2
 							dispose();
 						}
 					}

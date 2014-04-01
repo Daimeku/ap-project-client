@@ -15,7 +15,11 @@ public class Driver {
         /*
         Drink d = new Drink();
         d.setName("thisdrink");
+<<<<<<< HEAD
        // System.out.println("Sending choice");\\
+=======
+       // System.out.println("Sending choice");
+>>>>>>> 93a707fe61ad9522358182ef9004959a01c526d2
         String c = "add drink";
         cl.sendChoice(c);
         System.out.println("response: "+cl.recieveResponse());
