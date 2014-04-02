@@ -119,6 +119,7 @@ public class GuestView extends JFrame {
 		table.setGridColor(new Color(0, 0, 0));
 		table.setBackground(new Color(211, 211, 211));
 		client.sendChoice("drink table");
+		client.sendObject(client.getUser());
 		table.setModel(client.recieveTableModel());
 		
 		scrollPane.setViewportView(table);

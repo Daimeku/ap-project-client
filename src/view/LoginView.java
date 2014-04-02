@@ -195,9 +195,7 @@ public class LoginView extends JFrame {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent ae) {
 				
-				/* PR:
-				 * Attempt to login...
-				 */
+				
 				try {   		// for manager login
 					
 					if(rdbtnStaff.isSelected()){
@@ -210,6 +208,8 @@ public class LoginView extends JFrame {
 							client.sendObject(man);
 						
 							if(client.recieveResponse()){
+							//	man = (Manager) client.recieveObject();
+								client.setUser(man);
 								ManagerView manager = new ManagerView(client, LoginView.this);
 								manager.setVisible(true);
 								setVisible(false);
@@ -232,6 +232,8 @@ public class LoginView extends JFrame {
 							client.sendObject(guest);
 						
 							if(client.recieveResponse()){
+								guest = (Guest) client.recieveObject();
+								client.setUser(guest);
 								GuestView gView = new GuestView(client);
 								gView.setVisible(true);
 								dispose();

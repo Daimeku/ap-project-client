@@ -11,6 +11,7 @@ import java.net.*;
 import javax.swing.table.DefaultTableModel;
 
 import model.Drink;
+import model.Guest;
 import model.Manager;
 import model.User;
 /*
@@ -26,6 +27,7 @@ public class Client{
 	private Socket conn;
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
+	private User user;
 	
 	public Client(){
 		this.createConnection();
@@ -139,7 +141,16 @@ public class Client{
 		}
 	}
 	
-    public void run() throws Exception{
+	
+    public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	} 
+
+	public void run() throws Exception{
         
         Socket sk = new Socket(InetAddress.getLocalHost(), 8888);
         PrintStream ps = new PrintStream(sk.getOutputStream());
@@ -150,7 +161,21 @@ public class Client{
         
         String MESSAGE = BR.readLine();
         System.out.println(MESSAGE);
-    }            
+    }
+
+	public Object recieveObject() {
+		Object object = new Object();
+		try{
+			 object =  input.readObject();
+		}
+		catch(IOException ex){
+			ex.printStackTrace();
+		}
+		catch(Exception ex){
+			ex.printStackTrace();
+		}
+		return object;
+	}            
     
     
     

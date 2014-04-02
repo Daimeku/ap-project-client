@@ -47,6 +47,8 @@ public class ManagerView extends JFrame implements ActionListener {
 	private JButton btnModifyDrink;
 	private JButton btnViewOrders;
 	private JMenuItem mntmLogout;
+	private JScrollPane scrollPane;
+	private static JTable orderTable;
 
 	/**
 	 * Create the frame.
@@ -102,7 +104,7 @@ public class ManagerView extends JFrame implements ActionListener {
 		toolBarPanel = new JPanel();
 		toolBarPanel.setBackground(new Color(139, 0, 0));
 		
-		JScrollPane scrollPane = new JScrollPane();
+		scrollPane = new JScrollPane();
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -179,6 +181,7 @@ public class ManagerView extends JFrame implements ActionListener {
 		btnViewOrders.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/orders.png")));
 		btnViewOrders.setForeground(new Color(255, 255, 255));
 		btnViewOrders.setBackground(new Color(139, 0, 0));
+		btnViewOrders.addActionListener(this);
 		toolBar.add(btnViewOrders);
 		toolBarPanel.setLayout(gl_toolBarPanel);
 		
@@ -192,10 +195,25 @@ public class ManagerView extends JFrame implements ActionListener {
 		table.setBackground(new Color(211, 211, 211));
 		client.sendChoice("drink table");
 		//boolean b = client.recieveResponse();
+		
 		table.setModel(client.recieveTableModel());
 		
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
+		
+//		orderTable = new JTable();
+//		orderTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		orderTable.setSelectionBackground(new Color(46, 139, 87));
+//		orderTable.setRowMargin(0);
+//		orderTable.setFont(new Font("Serif", Font.PLAIN, 12));
+//		orderTable.setRowHeight(27);
+//		orderTable.setGridColor(new Color(0, 0, 0));
+//		orderTable.setBackground(new Color(211, 211, 211));
+//		client.sendChoice("order table");
+//		//boolean b = client.recieveResponse();
+//		orderTable.setModel(client.recieveTableModel());
+		
+	//	scrollPane.setViewportView(orderTable);
 	}
 	
 	public static JTable getTable(){
@@ -210,8 +228,12 @@ public class ManagerView extends JFrame implements ActionListener {
 		}
 		
 		if(e.getSource() == btnViewOrders){
-			client.sendChoice("order table");
+			client.sendChoice("report table");
 			table.setModel(client.recieveTableModel());
+//			System.out.println("view orders");
+//			scrollPane.setViewportView(orderTable);
+//			
+			
 		}
 		
 		if(e.getSource() == mntmLogout){
