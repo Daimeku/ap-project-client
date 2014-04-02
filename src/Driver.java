@@ -1,4 +1,5 @@
 import javax.swing.UIManager;
+import model.*;
 
 import view.LoginView;
 import model.Drink;
@@ -16,6 +17,9 @@ public class Driver {
 		}
 		
         Client cl = new Client();
+        Order order = new Order();
+     //   Guest guest = new Guest();
+        
         
        
         /*

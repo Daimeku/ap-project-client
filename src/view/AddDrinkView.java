@@ -129,13 +129,25 @@ public class AddDrinkView extends JDialog {
 					Drink aDrink = new Drink(drinkName, drinkType, drinkPrice);
 					
 					try {
-						if(aDrink.save()){
+						client.sendChoice("add drink");
+						
+						if(client.recieveResponse()){		//if server approves
+							client.sendObject(aDrink);
+							boolean res = client.recieveResponse();
+							if(res == true){		// IF DRINK IS ADDED
 							JOptionPane.showMessageDialog(null, drinkName+" drink added!", "Drink Added",
 								    JOptionPane.INFORMATION_MESSAGE);
+							}
+							else{// IF DRINK ISNT ADDED
+								JOptionPane.showMessageDialog(null, drinkName+" DRINK NOT ADDED", "Drink Added",
+									    JOptionPane.ERROR_MESSAGE);
+							}
 							ManagerView.getTable().setModel(DrinkAdapter.getTableModel());
 							clearFields(); // or dispose();
+							
+							
 						}
-					} catch (SQLException e) {
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 					

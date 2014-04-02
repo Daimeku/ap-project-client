@@ -188,7 +188,7 @@ public class LoginView extends JFrame {
 					
 					client.sendChoice("staff login");
 					if(client.recieveResponse()){
-						client.sendMan(man);
+						client.sendObject(man);
 						
 						if(client.recieveResponse()){
 							ManagerView manager = new ManagerView(client);
