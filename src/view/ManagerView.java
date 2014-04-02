@@ -210,7 +210,8 @@ public class ManagerView extends JFrame implements ActionListener {
 		}
 		
 		if(e.getSource() == btnViewOrders){
-			
+			client.sendChoice("order table");
+			table.setModel(client.recieveTableModel());
 		}
 		
 		if(e.getSource() == mntmLogout){
