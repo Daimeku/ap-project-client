@@ -23,13 +23,13 @@ import javax.swing.DefaultComboBoxModel;
 
 import network.Client;
 import model.Drink;
-import model.Drink.DrinkAdapter;
+
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
-public class AddDrinkView extends JDialog {
+public class AddDrinkView extends JDialog implements ActionListener{
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel;
@@ -112,51 +112,7 @@ public class AddDrinkView extends JDialog {
 	
 	public void registerListeners(){
 		// OK BUTTON
-		okButton.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				// get input values
-				String drinkName = tfName.getText().trim();
-				String drinkTypeString = comboBoxType.getSelectedItem().toString().trim();
-				Double drinkPrice = Double.parseDouble(spinnerPrice.getValue().toString());
-				
-				// set drinkType integer
-				int drinkType = (drinkTypeString.equals(Drink.TYPES[0]))?1:2;
-				
-				// if everything is A-OK create Drink object and attempt to save
-				if(drinkName.length() > 2 && drinkPrice >= Drink.MIN_PRICE){
-					Drink aDrink = new Drink(drinkName, drinkType, drinkPrice);
-					
-					try {
-						client.sendChoice("add drink");
-						
-						if(client.recieveResponse()){		//if server approves
-							client.sendObject(aDrink);
-							boolean res = client.recieveResponse();
-							if(res == true){		// IF DRINK IS ADDED
-							JOptionPane.showMessageDialog(null, drinkName+" drink added!", "Drink Added",
-								    JOptionPane.INFORMATION_MESSAGE);
-							}
-							else{// IF DRINK ISNT ADDED
-								JOptionPane.showMessageDialog(null, drinkName+" DRINK NOT ADDED", "Drink Added",
-									    JOptionPane.ERROR_MESSAGE);
-							}
-							ManagerView.getTable().setModel(DrinkAdapter.getTableModel());
-							clearFields(); // or dispose();
-							
-							
-						}
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					
-				}
-				else
-					JOptionPane.showMessageDialog(null, "The drink information you entered is invalid, please try again.","Invalid Drink",
-						    JOptionPane.ERROR_MESSAGE);
-			}// end method actionPerformed	
-		}); // END OK BUTTON LISTENER
+		okButton.addActionListener(this); // END OK BUTTON LISTENER
 		
 		
 		//CANCEL BUTTON LISTENER
@@ -240,5 +196,54 @@ public class AddDrinkView extends JDialog {
 		getRootPane().setDefaultButton(okButton);
 		this.setVisible(true);
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if(e.getSource() == okButton){
+			String drinkName = tfName.getText().trim();
+			String drinkTypeString = comboBoxType.getSelectedItem().toString().trim();
+			Double drinkPrice = Double.parseDouble(spinnerPrice.getValue().toString());
+			
+			// set drinkType integer
+			int drinkType = (drinkTypeString.equals(Drink.TYPES[0]))?1:2;
+			
+			// if everything is A-OK create Drink object and attempt to save
+			if(drinkName.length() > 2 && drinkPrice >= Drink.MIN_PRICE){
+				Drink aDrink = new Drink(drinkName, drinkType, drinkPrice);
+				
+				try {
+					client.sendChoice("add drink");
+					
+					if(client.recieveResponse()){		//if server approves
+						client.sendObject(aDrink);
+						boolean res = client.recieveResponse();
+						if(res == true){		// IF DRINK IS ADDED
+						JOptionPane.showMessageDialog(null, drinkName+" drink added!", "Drink Added",
+							    JOptionPane.INFORMATION_MESSAGE);
+						}
+						else{// IF DRINK ISNT ADDED
+							JOptionPane.showMessageDialog(null, drinkName+" DRINK NOT ADDED", "Drink Added",
+								    JOptionPane.ERROR_MESSAGE);
+						}
+						client.sendChoice("drink table");
+						ManagerView.getTable().setModel(client.recieveTableModel());
+						clearFields(); // or dispose();
+						
+						
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				
+			}
+			else
+				JOptionPane.showMessageDialog(null, "The drink information you entered is invalid, please try again.","Invalid Drink",
+					    JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+		
+}
 	
-} // end class AddDrink
+

@@ -33,13 +33,14 @@ import network.Client;
 
 import model.Drink.*;
 
-public class ManagerView extends JFrame {
+public class ManagerView extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JPanel toolBarPanel;
 	private static JTable table;
 	private JMenuItem mntmExit;
 	private JMenuItem mntmAbout;
+	private JButton btnAddDrink;
 
 	/**
 	 * Create the frame.
@@ -122,17 +123,11 @@ public class ManagerView extends JFrame {
 					.addGap(6))
 		);
 		
-		JButton btnAddDrink = new JButton("Add Drink ");
+		 btnAddDrink = new JButton("Add Drink ");
 		btnAddDrink.setFocusable(false);
 		btnAddDrink.setForeground(new Color(255, 255, 255));
 		btnAddDrink.setBackground(new Color(139, 0, 0));
-		btnAddDrink.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent ae) {
-				AddDrinkView newDrink = new AddDrinkView();
-				newDrink.show();
-			}
-		});
+		btnAddDrink.addActionListener(this);
 		btnAddDrink.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/add_drink.png")));
 		toolBar.add(btnAddDrink);
 		
@@ -179,5 +174,15 @@ public class ManagerView extends JFrame {
 	
 	public static JTable getTable(){
 		return table;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		if( e.getSource() == btnAddDrink ){
+			AddDrinkView addDrink = new AddDrinkView();
+			addDrink.show();
+		}
+		
 	}
 }
