@@ -9,6 +9,7 @@ import java.awt.event.FocusListener;
 import java.sql.SQLException;
 
 import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,6 +30,9 @@ import model.Manager;
 import model.Staff;
 import model.User;
 
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
+
 public class LoginView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -43,6 +47,9 @@ public class LoginView extends JFrame {
 	private JPasswordField passwordField;
 	private Client client;
 	private DBConnect DBM;
+	private JRadioButton rdbtnStaff;
+	private JRadioButton rdbtnGuest;
+	private ButtonGroup bg;
 	
 	
 	public LoginView() {
@@ -74,10 +81,19 @@ public class LoginView extends JFrame {
 		lblPassword = new JLabel("Password:");
 		textUserName = new JTextField("User Name");
 		passwordField = new JPasswordField("Password");
+		rdbtnStaff = new JRadioButton("Staff");
+		
+		rdbtnStaff.setFocusPainted(false);
+		rdbtnStaff.setRequestFocusEnabled(false);
+		rdbtnGuest = new JRadioButton("Guest");
+		rdbtnGuest.setSelected(true);
+		rdbtnGuest.setRequestFocusEnabled(false);
+		rdbtnGuest.setFocusPainted(false);
 		btnLogin = new JButton("Login");
 		lblBackground = new JLabel("bg");
 		lblWineBg = new JLabel("");
 		lblBackground_btm = new JLabel("bgBottom");
+		bg = new ButtonGroup();
 		this.client = client;
 		DBM = new DBConnect();
 		
@@ -105,6 +121,12 @@ public class LoginView extends JFrame {
 		passwordField.setEchoChar((char)0);
 		passwordField.setForeground(new Color(128, 128, 128));
 		passwordField.setBounds(167, 357, 193, 20);
+		
+		rdbtnStaff.setBounds(167, 384, 193, 23);
+		rdbtnGuest.setBounds(167, 410, 193, 23);
+		
+		bg.add(rdbtnStaff);
+		bg.add(rdbtnGuest);
 		
 		btnLogin.setFocusPainted(false);
 		btnLogin.setBackground(new Color(139, 0, 0));
@@ -176,25 +198,29 @@ public class LoginView extends JFrame {
 				 * Attempt to login...
 				 */
 				try {   		// for manager login
-					Manager man = new Manager();
-					man.setName(textUserName.getText().trim());
-					man.setPassword(passwordField.getText().trim());
 					
-					client.sendChoice("staff login");
-					if(client.recieveResponse()){
-						client.sendObject(man);
-						
+					if(rdbtnStaff.isSelected()){
+						Manager man = new Manager();
+						man.setName(textUserName.getText().trim());
+						man.setPassword(passwordField.getText().trim());
+					
+						client.sendChoice("staff login");
 						if(client.recieveResponse()){
-							ManagerView manager = new ManagerView(client);
-							manager.setVisible(true);
-							dispose();
+							client.sendObject(man);
+						
+							if(client.recieveResponse()){
+								ManagerView manager = new ManagerView(client);
+								manager.setVisible(true);
+								dispose();
+							}
+						}
+						else{
+							JOptionPane.showMessageDialog(null, "The credentials you entered were invalid, please try again.","Invalid Login",
+							    JOptionPane.ERROR_MESSAGE);
 						}
 					}
-					else{
-						JOptionPane.showMessageDialog(null, "The credentials you entered were invalid, please try again.","Invalid Login",
-							    JOptionPane.ERROR_MESSAGE);
+					else{ // DO GUEST HERE
 					}
-					
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -210,6 +236,8 @@ public class LoginView extends JFrame {
 		contentPane.add(lblPassword);
 		contentPane.add(textUserName);
 		contentPane.add(passwordField);
+		contentPane.add(rdbtnStaff);
+		contentPane.add(rdbtnGuest);
 		contentPane.add(lblBackground);
 		contentPane.add(btnLogin);
 		contentPane.add(lblBackground_btm);
