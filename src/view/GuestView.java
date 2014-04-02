@@ -1,17 +1,16 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.DefaultCellEditor;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -19,17 +18,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
 import javax.swing.JTable;
-import javax.swing.JToolBar;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableColumn;
 
-import model.Drink.DrinkAdapter;
-
-import java.awt.Component;
+import network.Client;
 
 public class GuestView extends JFrame {
 
@@ -43,7 +37,7 @@ public class GuestView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GuestView() {
+	public GuestView(Client client) {
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ManagerView.class.getResource("/resources/drink.png")));
 		setTitle("AP-Project v0.1.1");
@@ -124,7 +118,8 @@ public class GuestView extends JFrame {
 		table.setRowHeight(27);
 		table.setGridColor(new Color(0, 0, 0));
 		table.setBackground(new Color(211, 211, 211));
-		table.setModel(DrinkAdapter.getTableModel());
+		client.sendChoice("drink table");
+		table.setModel(client.recieveTableModel());
 		
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
