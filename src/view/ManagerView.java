@@ -42,15 +42,18 @@ public class ManagerView extends JFrame implements ActionListener {
 	private JMenuItem mntmAbout;
 	private JButton btnAddDrink;
 	private Client client;
+	private LoginView lv;
 	private JButton btnRemoveDrink;
 	private JButton btnModifyDrink;
 	private JButton btnViewOrders;
+	private JMenuItem mntmLogout;
 
 	/**
 	 * Create the frame.
 	 */
-	public ManagerView(Client client) {
+	public ManagerView(Client client, LoginView lv) {
 		this.client = client;
+		this.lv = lv;
 		
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ManagerView.class.getResource("/resources/drink.png")));
@@ -71,14 +74,8 @@ public class ManagerView extends JFrame implements ActionListener {
 			}
 		});
 		
-		JMenuItem mntmLogout = new JMenuItem("Logout");
-		mntmLogout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				LoginView lg = new LoginView();
-				lg.setVisible(true);
-				dispose();
-			}
-		});
+		mntmLogout = new JMenuItem("Logout");
+		mntmLogout.addActionListener(this);
 		mntmLogout.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/logout.png")));
 		mnFile.add(mntmLogout);
 		mntmExit.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/exit.png")));
@@ -178,10 +175,9 @@ public class ManagerView extends JFrame implements ActionListener {
 		toolBar.add(separator_2);
 		
 		btnViewOrders = new JButton("View Orders ");
-		btnViewOrders.setRequestFocusEnabled(false);
+		btnViewOrders.setFocusable(false);
 		btnViewOrders.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/orders.png")));
 		btnViewOrders.setForeground(new Color(255, 255, 255));
-		btnViewOrders.setFocusPainted(false);
 		btnViewOrders.setBackground(new Color(139, 0, 0));
 		toolBar.add(btnViewOrders);
 		toolBarPanel.setLayout(gl_toolBarPanel);
@@ -208,10 +204,18 @@ public class ManagerView extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		if( e.getSource() == btnAddDrink ){
 			AddDrinkView addDrink = new AddDrinkView(client);
 			addDrink.show();
+		}
+		
+		if(e.getSource() == btnViewOrders){
+			
+		}
+		
+		if(e.getSource() == mntmLogout){
+			lv.setVisible(true);
+			dispose();
 		}
 		
 	}
