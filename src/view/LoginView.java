@@ -210,9 +210,9 @@ public class LoginView extends JFrame {
 							client.sendObject(man);
 						
 							if(client.recieveResponse()){
-								ManagerView manager = new ManagerView(client);
+								ManagerView manager = new ManagerView(client, LoginView.this);
 								manager.setVisible(true);
-								dispose();
+								setVisible(false);
 							}
 						}
 						else{
