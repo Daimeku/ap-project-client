@@ -168,6 +168,7 @@ public class ManagerView extends JFrame implements ActionListener {
 		btnModifyDrink.setFocusable(false);
 		btnModifyDrink.setForeground(new Color(255, 255, 255));
 		btnModifyDrink.setBackground(new Color(139, 0, 0));
+		btnModifyDrink.addActionListener(this);
 		btnModifyDrink.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/mod_drink.png")));
 		toolBar.add(btnModifyDrink);
 		
@@ -240,6 +241,9 @@ public class ManagerView extends JFrame implements ActionListener {
 			lv.setVisible(true);
 			dispose();
 		}
-		
+		if(e.getSource() == btnModifyDrink){
+			ChangeDrinkView cv = new ChangeDrinkView(client);
+			cv.show();
+		}
 	}
 }
