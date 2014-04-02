@@ -201,6 +201,7 @@ public class AddDrinkView extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getSource() == okButton){
+			
 			String drinkName = tfName.getText().trim();
 			String drinkTypeString = comboBoxType.getSelectedItem().toString().trim();
 			Double drinkPrice = Double.parseDouble(spinnerPrice.getValue().toString());
@@ -213,6 +214,7 @@ public class AddDrinkView extends JDialog implements ActionListener{
 				Drink aDrink = new Drink(drinkName, drinkType, drinkPrice);
 				
 				try {
+					
 					client.sendChoice("add drink");
 					
 					if(client.recieveResponse()){		//if server approves
@@ -235,7 +237,7 @@ public class AddDrinkView extends JDialog implements ActionListener{
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
-				
+				this.dispose();
 			}
 			else
 				JOptionPane.showMessageDialog(null, "The drink information you entered is invalid, please try again.","Invalid Drink",

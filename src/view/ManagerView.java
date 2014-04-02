@@ -41,11 +41,14 @@ public class ManagerView extends JFrame implements ActionListener {
 	private JMenuItem mntmExit;
 	private JMenuItem mntmAbout;
 	private JButton btnAddDrink;
+	private Client client;
 
 	/**
 	 * Create the frame.
 	 */
 	public ManagerView(Client client) {
+		this.client = client;
+		
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ManagerView.class.getResource("/resources/drink.png")));
 		setTitle("AP-Project v0.1.1");
@@ -180,7 +183,7 @@ public class ManagerView extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if( e.getSource() == btnAddDrink ){
-			AddDrinkView addDrink = new AddDrinkView();
+			AddDrinkView addDrink = new AddDrinkView(client);
 			addDrink.show();
 		}
 		
