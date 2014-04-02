@@ -42,6 +42,9 @@ public class ManagerView extends JFrame implements ActionListener {
 	private JMenuItem mntmAbout;
 	private JButton btnAddDrink;
 	private Client client;
+	private JButton btnRemoveDrink;
+	private JButton btnModifyDrink;
+	private JButton btnViewOrders;
 
 	/**
 	 * Create the frame.
@@ -67,6 +70,17 @@ public class ManagerView extends JFrame implements ActionListener {
 				System.exit(EXIT_ON_CLOSE);
 			}
 		});
+		
+		JMenuItem mntmLogout = new JMenuItem("Logout");
+		mntmLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				LoginView lg = new LoginView();
+				lg.setVisible(true);
+				dispose();
+			}
+		});
+		mntmLogout.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/logout.png")));
+		mnFile.add(mntmLogout);
 		mntmExit.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/exit.png")));
 		mnFile.add(mntmExit);
 		
@@ -114,15 +128,15 @@ public class ManagerView extends JFrame implements ActionListener {
 		gl_toolBarPanel.setHorizontalGroup(
 			gl_toolBarPanel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_toolBarPanel.createSequentialGroup()
-					.addGap(131)
-					.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
-					.addGap(176))
+					.addGap(68)
+					.addComponent(toolBar, GroupLayout.PREFERRED_SIZE, 543, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(103, Short.MAX_VALUE))
 		);
 		gl_toolBarPanel.setVerticalGroup(
-			gl_toolBarPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_toolBarPanel.createSequentialGroup()
+			gl_toolBarPanel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_toolBarPanel.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 83, Short.MAX_VALUE)
+					.addComponent(toolBar, GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
 					.addGap(6))
 		);
 		
@@ -139,7 +153,7 @@ public class ManagerView extends JFrame implements ActionListener {
 		separator.setBackground(new Color(139, 0, 0));
 		toolBar.add(separator);
 		
-		JButton btnRemoveDrink = new JButton("Remove Drink");
+		btnRemoveDrink = new JButton("Remove Drink");
 		btnRemoveDrink.setFocusable(false);
 		btnRemoveDrink.setForeground(new Color(255, 255, 255));
 		btnRemoveDrink.setBackground(new Color(139, 0, 0));
@@ -151,12 +165,25 @@ public class ManagerView extends JFrame implements ActionListener {
 		separator_1.setForeground(new Color(139, 0, 0));
 		toolBar.add(separator_1);
 		
-		JButton btnModifyDrink = new JButton("Modify Drink ");
+		btnModifyDrink = new JButton("Modify Drink ");
 		btnModifyDrink.setFocusable(false);
 		btnModifyDrink.setForeground(new Color(255, 255, 255));
 		btnModifyDrink.setBackground(new Color(139, 0, 0));
 		btnModifyDrink.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/mod_drink.png")));
 		toolBar.add(btnModifyDrink);
+		
+		JSeparator separator_2 = new JSeparator();
+		separator_2.setForeground(new Color(139, 0, 0));
+		separator_2.setBackground(new Color(139, 0, 0));
+		toolBar.add(separator_2);
+		
+		btnViewOrders = new JButton("View Orders ");
+		btnViewOrders.setRequestFocusEnabled(false);
+		btnViewOrders.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/orders.png")));
+		btnViewOrders.setForeground(new Color(255, 255, 255));
+		btnViewOrders.setFocusPainted(false);
+		btnViewOrders.setBackground(new Color(139, 0, 0));
+		toolBar.add(btnViewOrders);
 		toolBarPanel.setLayout(gl_toolBarPanel);
 		
 		table = new JTable();
