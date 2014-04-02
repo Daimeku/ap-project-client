@@ -1,16 +1,22 @@
 package model;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
-public class Guest extends User {
+public class Guest extends User implements Serializable{
 	
 	private String code;
 	private ArmBand band;
 	
+	public Guest( ArmBand band) {
+		super();
+		this.name = "";
+		this.code = "";
+		this.band = band;
+	}	
 	
 	public Guest(String name, String code, ArmBand band) {
 		super();
@@ -47,7 +53,7 @@ public class Guest extends User {
 	 * @throws SQLException 
 	 */
 	public static boolean login(String username, String password) throws SQLException{
-		//log.trace("Guest login attempted...");
+		log.trace("Guest login attempted...");
 		
 		// Connect to DB
 		Connection con = DBConnect.getConnection();
@@ -63,7 +69,7 @@ public class Guest extends User {
 		while(guestsResult.next())
 			++count;
 		if(count == 1){
-		//	log.trace("Guest login successful.");
+			log.trace("Guest login successful.");
 			return true;
 		}
 		

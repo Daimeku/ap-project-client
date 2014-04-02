@@ -24,6 +24,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
 import network.Client;
+import model.ArmBand;
 import model.DBConnect;
 import model.Guest;
 import model.Manager;
@@ -220,7 +221,24 @@ public class LoginView extends JFrame {
 						}
 					}
 					else{ // DO GUEST HERE
+						
+						ArmBand ab  = new ArmBand();
+						Guest guest = new Guest(ab);
+						guest.setName(textUserName.getText().trim());
+						guest.setPassword(passwordField.getText().trim());
+					
+						client.sendChoice("guest login");
+						if(client.recieveResponse()){
+							client.sendObject(guest);
+						
+							if(client.recieveResponse()){
+								GuestView gView = new GuestView(client);
+								gView.setVisible(true);
+								dispose();
+							}
 					}
+				}
+					
 				}
 				catch (Exception e) {
 					e.printStackTrace();

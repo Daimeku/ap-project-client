@@ -1,7 +1,11 @@
 package model;
 
+import java.util.Date;
 
-public class ArmBand {
+
+import java.io.Serializable;
+
+public class ArmBand implements Serializable{
 
 	private Date startDate;
 	private Date endDate;
@@ -14,7 +18,7 @@ public class ArmBand {
 		colour = 0;
 		code="";
 	}
-	
+		
 	public ArmBand(Date sDate, Date eDate, int colour, String code) {
 		this.startDate = sDate;
 		this.endDate = eDate;
