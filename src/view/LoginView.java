@@ -234,6 +234,7 @@ public class LoginView extends JFrame {
 							if(client.recieveResponse()){
 								guest = (Guest) client.recieveObject();
 								client.setUser(guest);
+								client.setId(guest.getBand().getGuestID());
 								GuestView gView = new GuestView(client);
 								gView.setVisible(true);
 								dispose();

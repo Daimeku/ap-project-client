@@ -28,9 +28,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableModel;
 
 import model.Drink;
+import model.Order;
 import network.Client;
 
-public class GuestView extends JFrame {
+public class GuestView extends JFrame implements ActionListener {
 
 	private JPanel contentPane;
 	private JPanel toolBarPanel;
@@ -42,11 +43,13 @@ public class GuestView extends JFrame {
 	private JList orderList;
 	private DefaultListModel<Object> lm;
 	private ArrayList<Drink> drinks;
+	private Client client;
 
 	/**
 	 * Create the frame.
 	 */
 	public GuestView(Client client) {
+		this.client = client;
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ManagerView.class.getResource("/resources/drink.png")));
 		setTitle("AP-Project v0.1.1");
@@ -149,11 +152,7 @@ public class GuestView extends JFrame {
 		btnOrder.setFocusable(false);
 		btnOrder.setForeground(Color.BLACK);
 		btnOrder.setBackground(new Color(139, 0, 0));
-		btnOrder.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent ae) {
-				JOptionPane.showConfirmDialog(null, "Your Order:", "Confirm Order", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
-			}
-		});
+		btnOrder.addActionListener(this);
 		
 		table = new JTable();
 		table.setAutoscrolls(false);
@@ -185,7 +184,7 @@ public class GuestView extends JFrame {
 		lm.addElement(tm.getValueAt(selRow, 0));
 		orderList.setModel(lm);
 		
-		for(c=0; c>=2;c++){
+		for(c=0; c<=2;c++){
 			switch(c){
 			case 0:
 				drink.setName((String) tm.getValueAt(selRow, c));
@@ -200,17 +199,48 @@ public class GuestView extends JFrame {
 					drink.setType(2);
 			}
 		}
-		
+		drink.setName((String) tm.getValueAt(selRow,0));
+		System.out.println(tm.getValueAt(selRow, 0));
+		System.out.println(drink.getName());
 		drinks.add(drink);
 	}
 	
 	public void removeDrink(){
-		
-		lm.remove(orderList.getSelectedIndex());
+		if(lm.size() >= 1)
+			lm.remove(orderList.getSelectedIndex());
 		
 		for(Drink d:drinks){
 			if(d.getName() == orderList.getSelectedValue())
 				drinks.remove(d);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+		if(e.getSource() == btnOrder){
+			Order order = new Order(drinks);
+			System.out.println("drink amount: " + drinks.size());
+			order.setGuestID(client.getId());
+			order.setDrinkList(drinks);
+			try{
+				client.sendChoice("add order");
+				if(client.recieveResponse()){
+					client.sendObject(order);
+					if(client.recieveResponse()){
+						System.out.println("order added");
+					}
+				}
+				else{
+					
+				}
+			
+			}
+			catch(Exception ex){
+				ex.printStackTrace();
+			}
+			
 		}
 	}
 }

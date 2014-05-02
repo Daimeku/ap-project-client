@@ -57,7 +57,7 @@ public class ManagerView extends JFrame implements ActionListener {
 		this.client = client;
 		this.lv = lv;
 		
-		setResizable(false);
+		setResizable(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ManagerView.class.getResource("/resources/drink.png")));
 		setTitle("AP-Project v0.1.1");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -229,7 +229,7 @@ public class ManagerView extends JFrame implements ActionListener {
 		}
 		
 		if(e.getSource() == btnViewOrders){
-			client.sendChoice("report table");
+			client.sendChoice("order table");
 			table.setModel(client.recieveTableModel());
 //			System.out.println("view orders");
 //			scrollPane.setViewportView(orderTable);

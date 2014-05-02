@@ -14,10 +14,7 @@ import model.Drink;
 import model.Guest;
 import model.Manager;
 import model.User;
-/*
- *
- * @author Rajiv
- */
+
 public class Client{
 
     /**
@@ -28,6 +25,7 @@ public class Client{
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	private User user;
+	private int id;
 	
 	public Client(){
 		this.createConnection();
@@ -148,7 +146,17 @@ public class Client{
 
 	public void setUser(User user) {
 		this.user = user;
-	} 
+	}
+	
+	
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public void run() throws Exception{
         
