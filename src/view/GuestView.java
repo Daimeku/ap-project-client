@@ -6,6 +6,9 @@ import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -44,16 +47,18 @@ public class GuestView extends JFrame implements ActionListener {
 	private DefaultListModel<Object> lm;
 	private ArrayList<Drink> drinks;
 	private Client client;
+	final private Client closeClient;
 
 	/**
 	 * Create the frame.
 	 */
 	public GuestView(Client client) {
+		this.closeClient = client;
 		this.client = client;
 		setResizable(false);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ManagerView.class.getResource("/resources/drink.png")));
 		setTitle("AP-Project v0.1.1");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 720, 576);
 		
 		
@@ -68,6 +73,7 @@ public class GuestView extends JFrame implements ActionListener {
 		mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent aEvent) {
+				closeClient.sendChoice("exit");
 				System.exit(EXIT_ON_CLOSE);
 			}
 		});
@@ -168,6 +174,20 @@ public class GuestView extends JFrame implements ActionListener {
 		
 		scrollPane.setViewportView(table);
 		contentPane.setLayout(gl_contentPane);
+		
+		WindowListener closeListener = new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e){
+				this.closeWindow();
+			}
+			
+			public void closeWindow(){
+				closeClient.sendChoice("exit");
+				System.exit(EXIT_ON_CLOSE);
+			}
+		};
+		
+		this.addWindowListener(closeListener);
 	}
 	
 	public static JTable getTable(){

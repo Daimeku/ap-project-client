@@ -26,6 +26,9 @@ import javax.swing.JSeparator;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.ListSelectionModel;
 
@@ -49,18 +52,21 @@ public class ManagerView extends JFrame implements ActionListener {
 	private JMenuItem mntmLogout;
 	private JScrollPane scrollPane;
 	private static JTable orderTable;
+	private final Client closeClient;
 
 	/**
 	 * Create the frame.
 	 */
 	public ManagerView(Client client, LoginView lv) {
+		this.closeClient = client;
 		this.client = client;
 		this.lv = lv;
 		
 		setResizable(true);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ManagerView.class.getResource("/resources/drink.png")));
 		setTitle("AP-Project v0.1.1");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+	
 		setBounds(100, 100, 720, 576);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -72,6 +78,7 @@ public class ManagerView extends JFrame implements ActionListener {
 		mntmExit = new JMenuItem("Exit");
 		mntmExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent aEvent) {
+				closeClient.sendChoice("exit");
 				System.exit(EXIT_ON_CLOSE);
 			}
 		});
@@ -156,6 +163,7 @@ public class ManagerView extends JFrame implements ActionListener {
 		btnRemoveDrink.setFocusable(false);
 		btnRemoveDrink.setForeground(new Color(255, 255, 255));
 		btnRemoveDrink.setBackground(new Color(139, 0, 0));
+		btnRemoveDrink.addActionListener(this);
 		btnRemoveDrink.setIcon(new ImageIcon(ManagerView.class.getResource("/resources/rem_drink.png")));
 		toolBar.add(btnRemoveDrink);
 		
@@ -215,35 +223,54 @@ public class ManagerView extends JFrame implements ActionListener {
 //		orderTable.setModel(client.recieveTableModel());
 		
 	//	scrollPane.setViewportView(orderTable);
+		WindowListener closeListener = new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e){
+				this.closeWindow();
+			}
+			
+			public void closeWindow(){
+				closeClient.sendChoice("exit");
+				System.exit(EXIT_ON_CLOSE);
+			}
+		};
+		
+		this.addWindowListener(closeListener);
 	}
 	
 	public static JTable getTable(){
 		return table;
 	}
-
+	
+	
 	@Override
-	public void actionPerformed(ActionEvent e) {
-		if( e.getSource() == btnAddDrink ){
+	public void actionPerformed(ActionEvent e) {  
+		
+		if( e.getSource() == btnAddDrink ){			//if add drink button is pressed
+			client.sendChoice("drink table");
+			table.setModel(client.recieveTableModel());
 			AddDrinkView addDrink = new AddDrinkView(client);
 			addDrink.show();
 		}
 		
-		if(e.getSource() == btnViewOrders){
+		else if(e.getSource() == btnViewOrders){			// if view orders button is pressed
 			client.sendChoice("order table");
-			table.setModel(client.recieveTableModel());
-//			System.out.println("view orders");
-//			scrollPane.setViewportView(orderTable);
-//			
+			table.setModel(client.recieveTableModel());		
 			
 		}
 		
-		if(e.getSource() == mntmLogout){
+		else if(e.getSource() == mntmLogout){			// if logout button is pressed
 			lv.setVisible(true);
 			dispose();
 		}
-		if(e.getSource() == btnModifyDrink){
+		else if(e.getSource() == btnModifyDrink){		// if modify drink button is pressed
 			ChangeDrinkView cv = new ChangeDrinkView(client);
 			cv.show();
+		}
+		else if(e.getSource() == btnRemoveDrink){
+			System.out.println("remove drink pressed");
+			deleteDrinkView dv = new deleteDrinkView(client);
+			dv.show();
 		}
 	}
 }

@@ -29,29 +29,23 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.sql.SQLException;
 
-public class ChangeDrinkView extends JDialog implements ActionListener{
+public class deleteDrinkView extends JDialog implements ActionListener{
 	
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPanel;
 	private JPanel buttonPane;	//panel to hold 'OK' and 'CANCEL' buttons
 	private JLabel lblName;
-	private JLabel lblType;
-	private JLabel lblPrice;
 	private JTextField tfName;
-	private JComboBox<String> comboBoxType;
-	private JSpinner spinnerPrice;
 	private JButton okButton;
 	private JButton cancelButton;
 	private GroupLayout gl_contentPanel;
 	
 	private Client client;
 	
-	
-
 	/**
 	 * Create the dialog.
 	 */
-	public ChangeDrinkView() {
+	public deleteDrinkView() {
 		this.initializeComponents();
 		this.setLayouts();
 		this.addComponentsToPanels();
@@ -62,7 +56,7 @@ public class ChangeDrinkView extends JDialog implements ActionListener{
 	}
 	
 	// Primary Constructor
-	public ChangeDrinkView(Client client) {
+	public deleteDrinkView(Client client) {
 		this.client = client;
 		this.initializeComponents();
 		this.setLayouts();
@@ -75,8 +69,6 @@ public class ChangeDrinkView extends JDialog implements ActionListener{
 	
 	// clear all fields
 	private void clearFields(){
-		this.comboBoxType.setSelectedIndex(0);
-		this.spinnerPrice.setValue(0);
 		this.tfName.setText(null);
 	}
 	
@@ -86,13 +78,7 @@ public class ChangeDrinkView extends JDialog implements ActionListener{
 		
 		lblName = new JLabel("Name:");
 		tfName = new JTextField(10);
-		
-		lblType = new JLabel("Type:");
-		comboBoxType = new JComboBox<String>();
-		
-		lblPrice = new JLabel("Price:");
-		spinnerPrice = new JSpinner();
-		
+			
 		okButton = new JButton("OK");
 		cancelButton = new JButton("Cancel");
 		
@@ -126,7 +112,6 @@ public class ChangeDrinkView extends JDialog implements ActionListener{
 	
 	public void setComponentProperties(){
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		comboBoxType.setModel(new DefaultComboBoxModel<String>(new String[] {"-- select --", Drink.TYPES[0], Drink.TYPES[1]}));
 		//SET HORIZONTAL GROUP
 		gl_contentPanel.setHorizontalGroup(
 				gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -136,15 +121,7 @@ public class ChangeDrinkView extends JDialog implements ActionListener{
 							.addGroup(gl_contentPanel.createSequentialGroup()
 								.addComponent(lblName)
 								.addGap(10)
-								.addComponent(tfName, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE))
-							.addGroup(gl_contentPanel.createSequentialGroup()
-								.addComponent(lblType)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(comboBoxType, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGroup(gl_contentPanel.createSequentialGroup()
-								.addComponent(lblPrice)
-								.addGap(10)
-								.addComponent(spinnerPrice, GroupLayout.PREFERRED_SIZE, 62, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(tfName, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE))		)
 						.addContainerGap(102, Short.MAX_VALUE))
 		);
 		
@@ -159,26 +136,22 @@ public class ChangeDrinkView extends JDialog implements ActionListener{
 								.addComponent(lblName))
 							.addComponent(tfName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGap(35)
-						.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblType)
-							.addComponent(comboBoxType, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE))
 						.addGap(38)
 						.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 							.addGroup(gl_contentPanel.createSequentialGroup()
-								.addGap(6)
-								.addComponent(lblPrice))
-							.addComponent(spinnerPrice, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGap(6)))
 						.addContainerGap(49, Short.MAX_VALUE))
 		);
 		
 		//OK BUTTON PROPERTIES
 		okButton.setFocusable(false);
-		okButton.setIcon(new ImageIcon(ChangeDrinkView.class.getResource("/resources/accept.gif")));
+		okButton.setIcon(new ImageIcon(deleteDrinkView.class.getResource("/resources/accept.gif")));
 		okButton.setActionCommand("OK");
 		
 		//CANCEL BUTTON PROPERTIES
 		cancelButton.setFocusable(false);
-		cancelButton.setIcon(new ImageIcon(ChangeDrinkView.class.getResource("/resources/cancel.png")));
+		cancelButton.setIcon(new ImageIcon(deleteDrinkView.class.getResource("/resources/cancel.png")));
 		cancelButton.setActionCommand("Cancel");
 		
 	}
@@ -190,8 +163,8 @@ public class ChangeDrinkView extends JDialog implements ActionListener{
 	
 	public void setWindowProperties()
 	{
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ChangeDrinkView.class.getResource("/resources/add_drink.png")));
-		setTitle("Modify Drink");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(deleteDrinkView.class.getResource("/resources/rem_drink.png")));
+		setTitle("Remove Drink");
 		setBounds(100, 100, 450, 300);
 		getRootPane().setDefaultButton(okButton);
 		this.setVisible(true);
@@ -203,29 +176,28 @@ public class ChangeDrinkView extends JDialog implements ActionListener{
 		if(e.getSource() == okButton){
 			
 			String drinkName = tfName.getText().trim();
-			String drinkTypeString = comboBoxType.getSelectedItem().toString().trim();
-			Double drinkPrice = Double.parseDouble(spinnerPrice.getValue().toString());
+
 			
 			// set drinkType integer
-			int drinkType = (drinkTypeString.equals(Drink.TYPES[0]))?1:2;
+
 			
 			// if everything is A-OK create Drink object and attempt to save
-			if(drinkName.length() > 2 && drinkPrice >= Drink.MIN_PRICE){
-				Drink aDrink = new Drink(drinkName, drinkType, drinkPrice);
+			if(drinkName.length() > 2 ){
+				Drink aDrink = new Drink(drinkName, 1, 0.0);
 				
 				try {
 					
-					client.sendChoice("modify drink");
+					client.sendChoice("delete drink");
 					
 					if(client.recieveResponse()){		//if server approves
 						client.sendObject(aDrink);
 						boolean res = client.recieveResponse();
-						if(res == true){		// IF DRINK IS ADDED
-						JOptionPane.showMessageDialog(null, drinkName+"Drink updated", "drink changed",
+						if(res == true){		// IF DRINK IS removed
+						JOptionPane.showMessageDialog(null, drinkName+"Drink removed", "drink deleted",
 							    JOptionPane.INFORMATION_MESSAGE);
 						}
-						else{// IF DRINK ISNT ADDED
-							JOptionPane.showMessageDialog(null, drinkName+" NO DRINK MODIFIED", "Drink not modified",
+						else{// IF DRINK ISNT removed
+							JOptionPane.showMessageDialog(null, drinkName+" NO DRINK DELETED", "Drink not deleted",
 								    JOptionPane.ERROR_MESSAGE);
 						}
 						client.sendChoice("drink table");
